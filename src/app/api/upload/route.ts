@@ -20,8 +20,6 @@ const ensureSpace = async (client: Client, email: string): Promise<`did:key:${st
         const typedAcc = acc as { email?: string }
         return typedAcc.email === email
       })
-      
-
     
     if (!account) {
          try {
