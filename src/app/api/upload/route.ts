@@ -14,7 +14,15 @@ const ensureSpace = async (client: Client, email: string): Promise<`did:key:${st
     await client.setCurrentSpace(spaces[0].did())
     return spaces[0].did()
   } else {
-    let account = client.accounts().find((acc: { email?: string }) => acc.email === email)
+    const accounts = client.accounts()
+    let account = null
+    for (const key in accounts) {
+      if (accounts[key]?.email === email) {
+        account = accounts[key]
+        break
+      }
+    }
+    
     if (!account) {
          try {
              account = await client.login(email as `${string}@${string}`)
