@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { formidable } from 'formidable'
 import fs from 'fs'
 import * as W3Client from '@web3-storage/w3up-client'
-import { Blob } from 'buffer'
+import { Blob } from 'fetch-blob'
 import { Readable } from 'stream'
 
 // Interface pour le résultat de formidable
@@ -21,7 +21,7 @@ interface FormidableResult {
 /**
  * Assure qu'un espace est disponible pour l'upload IPFS
  */
-const ensureSpace = async (client: ReturnType<typeof W3Client.create>, email: string): Promise<string> => {
+const ensureSpace = async (client: W3Client.Client, email: string): Promise<string> => {
   const currentSpace = client.currentSpace()
   if (currentSpace) return currentSpace.did()
 

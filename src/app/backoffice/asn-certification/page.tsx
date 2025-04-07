@@ -98,10 +98,10 @@ export default function AsnCertificationPage() {
         docType: Number(doc.docType ?? DocumentType.Certification) as DocumentType,
         status: Number(doc.status ?? DocumentStatus.Submitted) as DocumentStatus,
         submitter: doc.submitter ?? '0x0000000000000000000000000000000000000000',
-        submittedAt: Number(doc.submittedAt ?? 0),
-        rejectedAt: doc.rejectedAt && BigInt(doc.rejectedAt) > 0 ? Number(doc.rejectedAt) : undefined,
-        pendingAt: doc.pendingAt && BigInt(doc.pendingAt) > 0 ? Number(doc.pendingAt) : undefined,
-        deprecatedAt: doc.deprecatedAt && BigInt(doc.deprecatedAt) > 0 ? Number(doc.deprecatedAt) : undefined,
+        submittedAt: BigInt(doc.submittedAt ?? 0),
+        rejectedAt: (doc.rejectedAt && BigInt(doc.rejectedAt) > BigInt(0)) ? BigInt(doc.rejectedAt) : BigInt(0),
+        pendingAt: (doc.pendingAt && BigInt(doc.pendingAt) > BigInt(0)) ? BigInt(doc.pendingAt) : BigInt(0),
+        deprecatedAt: (doc.deprecatedAt && BigInt(doc.deprecatedAt) > BigInt(0)) ? BigInt(doc.deprecatedAt) : BigInt(0),
         ipfsHash: doc.ipfsHash ?? '',
       }));
       setEquipmentDocuments(formattedDocs);

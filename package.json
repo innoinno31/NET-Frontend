@@ -24,6 +24,7 @@
     "@web3-storage/w3up-client": "^17.2.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "fetch-blob": "^4.0.0",
     "formidable": "^3.5.2",
     "lucide-react": "^0.487.0",
     "next": "14.2.24",
