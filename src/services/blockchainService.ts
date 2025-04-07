@@ -4,12 +4,10 @@ import {
 } from '@/contracts/NuclearContracts'
 import { currentChain } from '@/config/chainConfig'
 import {
-    http,
     keccak256,
     stringToBytes,
     createPublicClient as viemCreatePublicClient
 } from 'viem'
-import { hardhat } from 'viem/chains'
 
 // Client blockchain public pour les lectures
 const createClient = () => {

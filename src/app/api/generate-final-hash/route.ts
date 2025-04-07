@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createPublicClient, http, keccak256, encodePacked, Hash } from 'viem'
+import { createPublicClient, keccak256, encodePacked, Hash } from 'viem'
 import { currentChain } from '@/config/chainConfig'
 import {
   NUCLEAR_CERTIFICATION_IMPL_ABI,
