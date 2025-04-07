@@ -2,6 +2,7 @@ import {
   NUCLEAR_CERTIFICATION_STORAGE_ADDRESS, 
   NUCLEAR_CERTIFICATION_STORAGE_ABI,
 } from '@/contracts/NuclearContracts'
+import { currentChain } from '@/config/chainConfig'
 import {
     http,
     keccak256,
@@ -13,8 +14,8 @@ import { hardhat } from 'viem/chains'
 // Client blockchain public pour les lectures
 const createClient = () => {
   return viemCreatePublicClient({
-    chain: hardhat,
-    transport: http(process.env.NEXT_PUBLIC_HARDHAT_RPC_URL || 'http://127.0.0.1:8545') 
+    chain: currentChain.chain,
+    transport: currentChain.transport
   })
 }
 

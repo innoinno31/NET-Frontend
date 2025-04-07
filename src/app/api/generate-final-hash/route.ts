@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createPublicClient, http, keccak256, encodePacked, Hash } from 'viem'
+import { currentChain } from './chainConfig'
 import { hardhat } from 'viem/chains'
 import {
   NUCLEAR_CERTIFICATION_IMPL_ABI,
@@ -14,8 +15,8 @@ interface DocumentData {
 
 // Créer un client public VIEM pour les lectures serveur
 const publicClient = createPublicClient({
-  chain: hardhat,
-  transport: http(process.env.NEXT_PUBLIC_HARDHAT_RPC_URL || 'http://127.0.0.1:8545')
+  chain: currentChain.chain,
+  transport: currentChain.transport
 })
 
 export async function POST(req: NextRequest) {
