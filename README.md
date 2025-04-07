@@ -96,10 +96,6 @@ Le projet est configuré pour être déployé facilement sur Vercel:
 - **ASN**: Autorité de certification et validation réglementaire
 - **Certifieur**: Émission des certificats de conformité
 
-## 📄 License
-
-Tous droits réservés.
-
 ## 🙏 Contribution
 
 Les contributions sont les bienvenues! Veuillez suivre le processus standard:
