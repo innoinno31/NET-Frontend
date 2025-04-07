@@ -1,6 +1,25 @@
-import { BuildingOffice2Icon, EnvelopeIcon, PhoneIcon } from '@heroicons/react/24/outline'
+'use client'
+
+import { BuildingOffice2Icon } from '@heroicons/react/24/outline'
+import { useState } from 'react'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 
 function ContactForm() {
+  const [showAlert, setShowAlert] = useState(false)
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setShowAlert(true)
+  }
+
   return (
     <div className="relative isolate bg-gray-50">
       <div className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2">
@@ -32,7 +51,7 @@ function ContactForm() {
               </svg>
             </div>
             <h2 className="text-pretty text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-              Contactez-nous
+              Notre équipe
             </h2>
             <p className="mt-6 text-lg/8 text-white">
               Notre équipe est à votre disposition pour répondre à toutes vos questions. N'hésitez pas à nous contacter pour en savoir plus sur nos services et solutions blockchain.
@@ -49,32 +68,10 @@ function ContactForm() {
                   75008 Paris, France
                 </dd>
               </div>
-              <div className="flex gap-x-4">
-                <dt className="flex-none">
-                  <span className="sr-only">Téléphone</span>
-                  <PhoneIcon aria-hidden="true" className="h-7 w-6 text-white" />
-                </dt>
-                <dd>
-                  <a href="tel:+33 1 23 45 67 89" className="hover:text-white">
-                    +33 1 23 45 67 89
-                  </a>
-                </dd>
-              </div>
-              <div className="flex gap-x-4">
-                <dt className="flex-none">
-                  <span className="sr-only">Email</span>
-                  <EnvelopeIcon aria-hidden="true" className="h-7 w-6 text-white" />
-                </dt>
-                <dd>
-                  <a href="mailto:contact@exemple.fr" className="hover:text-white">
-                    contact@exemple.fr
-                  </a>
-                </dd>
-              </div>
             </dl>
           </div>
         </div>
-        <form action="#" method="POST" className="px-6 pb-24 pt-20 sm:pb-32 lg:px-8 lg:py-48">
+        <form action="#" method="POST" onSubmit={handleSubmit} className="px-6 pb-24 pt-20 sm:pb-32 lg:px-8 lg:py-48">
           <div className="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
             <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
               <div>
@@ -153,12 +150,29 @@ function ContactForm() {
                 type="submit"
                 className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Envoyer le message
+                Contacter notre équipe
               </button>
             </div>
           </div>
         </form>
       </div>
+
+      {/* Alert Dialog */}
+      <AlertDialog open={showAlert} onOpenChange={setShowAlert}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Formulaire en version test</AlertDialogTitle>
+            <AlertDialogDescription>
+              Ce formulaire de contact n'est pas opérationnel dans la version test de notre site.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={() => setShowAlert(false)}>
+              Compris
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

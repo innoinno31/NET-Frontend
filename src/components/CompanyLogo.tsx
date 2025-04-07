@@ -7,10 +7,10 @@ function CompanyLogo() {
     return (
         <div className="hidden sm:flex">
             <Image
-            src="/logo.png"
+            src="/logo2.png"
             alt="Logo"
-            width={100}
-            height={100}
+            width={120}
+            height={120}
             onClick={() => router.push('/')}
             className="cursor-pointer"
         />

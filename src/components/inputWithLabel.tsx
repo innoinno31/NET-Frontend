@@ -13,7 +13,7 @@ type InputWithLabelProps = {
   touched?: boolean
 }
 
-function InputWithLabel({
+const InputWithLabel = ({
   label,
   name,
   type = 'text',
@@ -24,7 +24,7 @@ function InputWithLabel({
   onChange,
   error,
   touched = false
-}: InputWithLabelProps) {
+}: InputWithLabelProps) => {
   // Génère un ID unique pour cet input spécifique
   const id = useId() + '-' + name
   

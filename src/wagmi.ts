@@ -6,12 +6,14 @@ import {
   optimism,
   polygon,
   sepolia,
+  hardhat,
 } from 'wagmi/chains';
 
 export const config = getDefaultConfig({
-  appName: 'RainbowKit demo',
+  appName: 'Nuclear Certification Demo',
   projectId: 'YOUR_PROJECT_ID',
   chains: [
+    hardhat,
     mainnet,
     polygon,
     optimism,

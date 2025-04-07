@@ -9,7 +9,7 @@ function BentoHomepage() {
             <p className="text-pretty text-4xl font-semibold tracking-tight text-gray-950 sm:text-5xl">
               Certification nucléaire sécurisée par
             </p>
-            <div className="relative mt-2 inline-block">
+            <div className="relative mt-5 inline-block">
               <span className="relative z-10 text-pretty text-4xl font-bold tracking-tight text-white sm:text-5xl px-4 py-2 bg-gradient-to-r from-indigo-900 to-blue-600 rounded-lg shadow-lg">
                 <span className="relative">
                   BLOCKCHAIN

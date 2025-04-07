@@ -31,28 +31,44 @@ function OurTeam() {
     return (
       <div className="bg-gray-50 py-24 sm:py-32">
         <div className="mx-auto grid max-w-7xl gap-20 px-6 lg:px-8 xl:grid-cols-3">
+
+          {/* Notre équipe */}
           <div className="max-w-xl">
             <h2 className="text-pretty text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
-              Notre équipe dirigeante
+              Notre équipe
             </h2>
             <p className="mt-6 text-lg/8 text-gray-600">
-              Nous sommes un groupe dynamique de professionnels passionnés par notre travail et dédiés à offrir les
-              meilleurs résultats pour nos clients.
+              Nous sommes un groupe d'apprenants en formation chez Alyra, l'école de la blockchain, réunis autour d'un projet de fin d'étude ambitieux.
+            </p>
+            <p className="mt-4 text-lg/8 text-gray-600">
+              Ce projet de certification nucléaire via blockchain est pour nous l'occasion de mettre en pratique nos compétences tout en explorant les enjeux de sécurité, de transparence et de traçabilité propres aux technologies décentralisées.
+            </p>
+            <p className="mt-4 text-lg/8 text-gray-600">
+              Il ne s'agit pas d'un produit commercial, mais d'une démonstration technique conçue avec rigueur, dans un cadre pédagogique.
             </p>
           </div>
-          <ul role="list" className="grid gap-x-8 gap-y-12 sm:grid-cols-2 sm:gap-y-16 xl:col-span-2">
-            {people.map((person) => (
-              <li key={person.name}>
-                <div className="flex items-center gap-x-6">
-                  <img alt="" src={person.imageUrl} className="size-16 rounded-full" />
-                  <div>
-                    <h3 className="text-base/7 font-semibold tracking-tight text-gray-900">{person.name}</h3>
-                    <p className="text-sm/6 font-semibold text-indigo-600">{person.role}</p>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
+
+          {/* Team members */}          
+          <ul
+  role="list"
+  className="mx-auto mt-20 grid max-w-4xl grid-cols-1 gap-x-12 gap-y-20 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 xl:col-span-2"
+>
+  {people.map((person) => (
+    <li key={person.name} className="flex flex-col items-center text-center">
+      <img
+        alt={person.name}
+        src={person.imageUrl}
+        className="w-48 h-48 rounded-2xl object-cover shadow-lg"
+      />
+      <h3 className="mt-4 text-xl font-semibold text-gray-900">
+        {person.name}
+      </h3>
+      <p className="text-sm text-gray-600">{person.role}</p>
+    </li>
+  ))}
+</ul>
+
+
         </div>
       </div>
     )
