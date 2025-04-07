@@ -80,6 +80,11 @@ Le projet est configuré pour être déployé facilement sur Vercel:
 2. Configurez les variables d'environnement dans l'interface Vercel
 3. Déployez!
 
+## ✅ CI/CD
+
+- Déploiement automatique via [Vercel](https://vercel.com)
+- Vérification automatique du code (lint + typecheck) via GitHub Actions
+
 ### Configuration Vercel recommandée
 
 - **Framework Preset**: Next.js
