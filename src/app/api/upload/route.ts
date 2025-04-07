@@ -14,14 +14,14 @@ const ensureSpace = async (client: Client, email: string): Promise<`did:key:${st
     await client.setCurrentSpace(spaces[0].did())
     return spaces[0].did()
   } else {
+
     const accounts = client.accounts()
-    let account = null
-    for (const key in accounts) {
-      if (accounts[key]?.email === email) {
-        account = accounts[key]
-        break
-      }
-    }
+    let account = Object.values(accounts).find((acc) => {
+        const typedAcc = acc as { email?: string }
+        return typedAcc.email === email
+      })
+      
+
     
     if (!account) {
          try {
