@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useCallback, useEffect } from 'react'
-import { useWriteContract, useWaitForTransactionReceipt, useAccount } from 'wagmi'
+import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
 import UserService from '@/services/userService'
 import { useToast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Hash } from 'viem'
 import { DocumentType } from '@/lib/enums'
 
 // Interface Props
@@ -27,7 +26,6 @@ const DocumentUploader: React.FC<DocumentUploaderProps> = ({ equipmentId }) => {
 
   const MAX_FILE_SIZE_MB = 10
 
-  const { address } = useAccount()
   const { toast } = useToast()
 
   // --- Hooks Contrat Blockchain ---

@@ -27,12 +27,9 @@ export default function CertificatesPage() {
   const [documents, setDocuments] = useState<Document[]>([])
   const [isLoadingComponent, setIsLoadingComponent] = useState(false)
 
-  const { address, isConnected } = useAccount()
+  const { isConnected } = useAccount()
   const { toast } = useToast()
-  const { roles, hasRole, isLoading: isLoadingRoles } = useUserRoles()
-
-  const isExploitant = hasRole('exploitant')
-  const isAsn = hasRole('asn')
+  const { isLoading: isLoadingRoles } = useUserRoles()
 
   // --- Hook Lecture des Centrales (pour le Select) ---
   const {
@@ -49,7 +46,6 @@ export default function CertificatesPage() {
   // --- Hook Lecture des Documents pour la CENTRALE SÉLECTIONNÉE ---
   const {
     data: documentsData,
-    refetch: refetchDocuments,
     isLoading: isLoadingDocuments,
     error: documentsError
   } = useReadContract({

@@ -1,40 +1,77 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { formidable, File } from 'formidable'
+import { formidable } from 'formidable'
 import fs from 'fs'
-import { create, Client, type Account } from '@web3-storage/w3up-client'
+import * as W3Client from '@web3-storage/w3up-client'
 import { Blob } from 'buffer'
 import { Readable } from 'stream'
 
-const ensureSpace = async (client: Client, email: string): Promise<`did:key:${string}`> => {
-  let currentSpace = client.currentSpace()
+// Interface pour le résultat de formidable
+interface FormidableFile {
+  filepath: string
+  originalFilename: string
+  mimetype?: string
+  size: number
+}
+
+interface FormidableResult {
+  fields: Record<string, string[]>
+  files: Record<string, FormidableFile[]>
+}
+
+/**
+ * Assure qu'un espace est disponible pour l'upload IPFS
+ */
+const ensureSpace = async (client: ReturnType<typeof W3Client.create>, email: string): Promise<string> => {
+  const currentSpace = client.currentSpace()
   if (currentSpace) return currentSpace.did()
 
+  // Vérifier si des espaces existent déjà
   const spaces = await client.spaces()
   if (spaces.length > 0) {
     await client.setCurrentSpace(spaces[0].did())
     return spaces[0].did()
-  } else {
-
-    const accounts = client.accounts()
-    let account = Object.values(accounts).find((acc) => {
-        const typedAcc = acc as { email?: string }
-        return typedAcc.email === email
-      }) as Account | undefined
-    
-    if (!account) {
-         try {
-             account = await client.login(email as `${string}@${string}`)
-         } catch (e) {
-             throw new Error("Impossible de lier l'espace au compte email via l'API.")
-         }
+  } 
+  
+  // Aucun espace disponible, il faut en créer un nouveau
+  try {
+    // Si aucun compte n'est configuré, faire login
+    if (!Object.keys(client.accounts()).length) {
+      // Attendre que l'utilisateur clique sur le lien dans l'email pour vérifier son identité
+      const account = await client.login(email as `${string}@${string}`)
+      
+      // Créer un nouvel espace pour les uploads
+      const space = await client.createSpace(`Storcha-${Date.now()}`)
+      
+      // Sauvegarder l'espace et le définir comme "courant"
+      await space.save()
+      
+      // Associer cet espace au compte
+      await account.provision(space.did())
+      
+      return space.did()
+    } else {
+      // Il y a des comptes mais pas d'espace, créer un nouvel espace
+      const accounts = Object.values(client.accounts())
+      const account = accounts[0] as { provision: (did: string) => Promise<void> }
+      
+      // Créer un nouvel espace pour les uploads
+      const space = await client.createSpace(`Storcha-${Date.now()}`)
+      
+      // Sauvegarder l'espace et le définir comme "courant"
+      await space.save()
+      
+      // Associer cet espace au compte
+      await account.provision(space.did())
+      
+      return space.did()
     }
-    const newSpace = await client.createSpace(`MyAPIDocs-${Date.now()}`, { account })
-    await client.setCurrentSpace(newSpace.did())
-    return newSpace.did()
+  } catch (e) {
+    console.error("Erreur lors de la configuration de l'espace:", e)
+    throw new Error("Impossible de lier l'espace au compte email via l'API.")
   }
 }
 
-async function parseFormData(req: NextRequest): Promise<{ fields: any; files: any }> {
+async function parseFormData(req: NextRequest): Promise<FormidableResult> {
     const contentType = req.headers.get('content-type')
     if (!contentType || !contentType.includes('multipart/form-data')) {
         throw new Error('Invalid Content-Type');
@@ -71,7 +108,7 @@ async function parseFormData(req: NextRequest): Promise<{ fields: any; files: an
             if (err) {
                 reject(err);
             } else {
-                resolve({ fields, files });
+                resolve({ fields, files } as unknown as FormidableResult);
             }
         });
     });
@@ -86,7 +123,7 @@ export async function POST(req: NextRequest) {
   try {
     const { files } = await parseFormData(req);
 
-    const uploadedFile = files.file?.[0] as File | undefined
+    const uploadedFile = files.file?.[0]
 
     if (!uploadedFile) {
       return NextResponse.json({ error: 'No file uploaded.' }, { status: 400 })
@@ -94,19 +131,15 @@ export async function POST(req: NextRequest) {
 
     const fileContent = fs.readFileSync(uploadedFile.filepath)
 
-    let client: Client
+    let client;
     try {
-        client = await create()
-        if (!client.identity) {
-            await client.login(storachaLoginEmail as `${string}@${string}`)
-            await ensureSpace(client, storachaLoginEmail)
-        } else {
-            if (!client.currentSpace()) {
-                 await ensureSpace(client, storachaLoginEmail)
-            }
-        }
-    } catch (initError: any) {
-         const message = initError.message || ''
+        client = await W3Client.create()
+        
+        // Assurer qu'un espace est disponible
+        await ensureSpace(client, storachaLoginEmail)
+        
+    } catch (initError: unknown) {
+         const message = (initError as Error)?.message || ''
          const isVerificationError = message.includes('Verification email') || message.includes('expired') || message.includes('Account not verified')
          const specificErrorMessage = isVerificationError
             ? `Échec initialisation IPFS. Vérifiez l'email (${storachaLoginEmail}) pour un lien de validation Storacha (ou contactez l'admin).`
@@ -125,13 +158,18 @@ export async function POST(req: NextRequest) {
           }
         return NextResponse.json({ cid: cidString }, { status: 200 })
 
-    } catch (uploadError) {
-        fs.unlinkSync(uploadedFile.filepath)
+    } catch (err: unknown) {
+        try {
+            console.error('Error uploading file to IPFS:', err)
+            fs.unlinkSync(uploadedFile.filepath)
+        } catch (e) {
+            console.warn('Temp file not deleted after upload error:', e)
+        }
         return NextResponse.json({ error: 'Failed to upload file to IPFS.' }, { status: 500 })
     }
 
-  } catch (err: any) {
-      if (err.code === 'LIMIT_FILE_SIZE' || err.httpCode === 413) { 
+  } catch (err: unknown) {
+      if ((err as any).code === 'LIMIT_FILE_SIZE' || (err as any).httpCode === 413) { 
           return NextResponse.json({ error: `File size exceeds the ${10}MB limit.` }, { status: 413 })
       }
       return NextResponse.json({ error: 'Error processing file upload.' }, { status: 500 })

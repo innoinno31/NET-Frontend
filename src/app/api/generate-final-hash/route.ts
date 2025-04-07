@@ -6,6 +6,12 @@ import {
   NUCLEAR_CERTIFICATION_IMPL_ADDRESS
 } from '@/contracts/NuclearContracts'
 
+// Interface pour la structure de document retournée par getDocument
+interface DocumentData {
+  ipfsHash?: string
+  [key: string]: unknown
+}
+
 // Créer un client public VIEM pour les lectures serveur
 const publicClient = createPublicClient({
   chain: hardhat,
@@ -29,8 +35,8 @@ export async function POST(req: NextRequest) {
         try {
             equipmentIdBigInt = BigInt(equipmentId.trim())
             if (equipmentIdBigInt < 0) throw new Error("L'ID doit être un nombre positif ou zéro.")
-        } catch (error: any) {
-             return NextResponse.json({ error: 'Invalid equipmentId format. Must be a non-negative integer.' }, { status: 400 })
+        } catch (err) {
+             return NextResponse.json({ error: 'Invalid equipmentId format. Must be a non-negative integer.', details: (err as Error).message }, { status: 400 })
         }
 
         // Récupérer les IDs des documents
@@ -53,8 +59,8 @@ export async function POST(req: NextRequest) {
                 functionName: 'getDocument',
                 args: [docId],
             }).then(doc => {
-                const ipfsHash = (doc as any)?.ipfsHash
-                return { id: docId, ipfsHash: typeof ipfsHash === 'string' ? ipfsHash : null }
+                const docData = doc as DocumentData
+                return { id: docId, ipfsHash: typeof docData.ipfsHash === 'string' ? docData.ipfsHash : null }
             }).catch(() => {
                 return { id: docId, ipfsHash: null }
             })
@@ -81,7 +87,7 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({ finalHash }, { status: 200 })
 
-    } catch (error: any) {
-        return NextResponse.json({ error: 'Internal server error during hash generation.', details: error.message }, { status: 500 })
+    } catch (err) {
+        return NextResponse.json({ error: 'Internal server error during hash generation.', details: (err as Error).message }, { status: 500 })
     }
 }

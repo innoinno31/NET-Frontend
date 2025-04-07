@@ -83,6 +83,7 @@ class BlockchainService {
       
       return result as boolean
     } catch (error) {
+      console.error('Erreur lors de la vérification du rôle:', error)
       return false
     }
   }
@@ -119,6 +120,7 @@ class BlockchainService {
       
       return []
     } catch (error) {
+      console.error('Erreur lors de la récupération des rôles utilisateur:', error)
       return []
     }
   }
@@ -141,6 +143,7 @@ class BlockchainService {
       
       return data
     } catch (error) {
+      console.error('Erreur lors de la vérification du certificat:', error)
       return null
     }
   }

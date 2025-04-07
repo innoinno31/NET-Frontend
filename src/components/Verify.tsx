@@ -39,6 +39,7 @@ function Verify() {
       alert(`Vérification du certificat: ${certificateId}`)
       setLoading(false)
     } catch (error) {
+      console.error('Erreur lors de la vérification:', error)
       setError('Une erreur est survenue lors de la vérification')
       setLoading(false)
     }

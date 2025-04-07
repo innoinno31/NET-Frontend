@@ -68,7 +68,7 @@ const RoleProtected = ({
     return <>{children}</>
   }
   
-  return <AccessDenied roles={roles} userRoles={[userRole].filter(Boolean) as string[]} isConnected={isConnected} />
+  return <AccessDenied />
 }
 
 export default RoleProtected 

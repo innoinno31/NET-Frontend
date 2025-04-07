@@ -67,9 +67,9 @@ export default function CertificationRequestsPage() {
   // Réintroduire useRef pour stocker la fonction refetch de SelectEquipment
   const refetchEquipmentsRef = useRef<RefetchEquipmentsFn | null>(null);
 
-  const { address, isConnected } = useAccount()
+  const { isConnected } = useAccount()
   const { toast } = useToast()
-  const { roles, hasRole, isLoading: isLoadingRoles } = useUserRoles()
+  const { isLoading: isLoadingRoles } = useUserRoles()
 
   const allowedRoles = ['exploitant']
 

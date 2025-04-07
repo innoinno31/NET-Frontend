@@ -3,20 +3,10 @@
 import React from 'react'
 import Link from 'next/link'
 
-interface AccessDeniedProps {
-  isConnected?: boolean
-  roles?: string[]
-  userRoles?: string[]
-}
-
 /**
  * Composant qui affiche un message d'erreur 403 (Accès refusé)
  */
-const AccessDenied: React.FC<AccessDeniedProps> = ({
-  isConnected = false,
-  roles = [],
-  userRoles = []
-}) => {
+const AccessDenied: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[70vh] px-4">
       <div className="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mb-6">

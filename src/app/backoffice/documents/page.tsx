@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useCallback } from 'react'
 import { useAccount } from 'wagmi'
-import { useToast } from "@/hooks/use-toast"
 import { useUserRoles } from '@/hooks/useUserRoles'
 import RoleProtected from '@/components/RoleProtected'
 import DocumentUploader from '@/components/DocumentUploader'
@@ -19,9 +18,8 @@ export default function ManufacturingPage() {
   const [isLoadingEquipments, setIsLoadingEquipments] = useState(false)
   const [isLoadingComponent, setIsLoadingComponent] = useState(true)
 
-  const { address, isConnected } = useAccount()
-  const { toast } = useToast()
-  const { roles, hasRole, isLoading: isLoadingRoles } = useUserRoles()
+  const { isConnected } = useAccount()
+  const { isLoading: isLoadingRoles } = useUserRoles()
 
   // Assurer que les rôles autorisés sont corrects
   const allowedRoles = ['constructeur', 'labo', 'certifieur']

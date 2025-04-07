@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/dialog"
 import { Badge } from '@/components/ui/badge'
 import { CertificationSteps, EquipmentStatus } from '@/lib/enums'
-import { formatCertificationStep, formatEquipmentStatus, formatDate, formatDateTime, formatAddress } from '@/lib/formatters'
+import { formatCertificationStep, formatEquipmentStatus, formatDateTime, formatAddress } from '@/lib/formatters'
 import type { Equipment } from '@/lib/interfaces'
 
 // --- Composant Page ---
@@ -42,9 +42,9 @@ export default function ViewAndManageEquipmentPage() {
   const [isLoadingEquipments, setIsLoadingEquipments] = useState(false)
   const [isLoadingComponent, setIsLoadingComponent] = useState(true)
 
-  const { address, isConnected } = useAccount()
+  const { isConnected } = useAccount()
   const { toast } = useToast()
-  const { roles, hasRole, isLoading: isLoadingRoles } = useUserRoles()
+  const { isLoading: isLoadingRoles } = useUserRoles()
 
   const allowedRoles = ['exploitant']
 

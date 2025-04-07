@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
-import { Hash, Address } from 'viem'
+import { Hash } from 'viem'
 import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query'
 import UserService from '@/services/userService'
 import { useToast } from "@/hooks/use-toast"
@@ -55,9 +55,9 @@ export default function AsnCertificationPage() {
   // Ref pour stocker la fonction refetch de SelectEquipment
   const refetchEquipmentsRef = useRef<RefetchEquipmentsFn | null>(null);
 
-  const { address, isConnected } = useAccount()
+  const { isConnected } = useAccount()
   const { toast } = useToast()
-  const { roles, hasRole, isLoading: isLoadingRoles } = useUserRoles()
+  const { isLoading: isLoadingRoles } = useUserRoles()
 
   const allowedRoles = ['asn'] // REGULATORY_AUTHORITY
 

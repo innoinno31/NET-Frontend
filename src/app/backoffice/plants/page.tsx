@@ -23,7 +23,7 @@ export default function PlantsPage() {
   const [currentAction, setCurrentAction] = useState<'addPlant' | null>(null)
   
   // Connexion au portefeuille
-  const { address, isConnected } = useAccount()
+  const { isConnected } = useAccount()
   
   // Système de notification toast
   const { toast } = useToast()

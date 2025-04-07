@@ -47,6 +47,7 @@ export const useUserRoles = () => {
         const userRoles = await blockchainService.getUserRoles(address)
         setRoles(userRoles)
       } catch (err) {
+        console.error('Erreur lors de la récupération des rôles utilisateur:', err)
         setError('Impossible de récupérer les rôles utilisateur')
         setRoles([])
       } finally {

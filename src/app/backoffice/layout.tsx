@@ -1,6 +1,6 @@
 'use client'
 
-import React, { ReactNode, useEffect } from 'react'
+import React, { ReactNode } from 'react'
 import { useUserRoles } from '@/hooks/useUserRoles'
 import SidebarMenu from '@/components/backoffice/SidebarMenu'
 import RoleProtected from '@/components/RoleProtected'
@@ -10,7 +10,7 @@ interface BackofficeLayoutProps {
 }
 
 const BackofficeLayout: React.FC<BackofficeLayoutProps> = ({ children }) => {
-  const { roles, isLoading } = useUserRoles() 
+  const { isLoading } = useUserRoles() 
   
   // Afficher un indicateur de chargement pendant le chargement des rôles
   if (isLoading) {

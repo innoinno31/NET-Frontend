@@ -60,13 +60,13 @@ export default function UsersPage() {
   const [currentAction, setCurrentAction] = useState<'addUser' | null>(null)
   
   // Connexion au portefeuille
-  const { address, isConnected } = useAccount()
+  const { isConnected } = useAccount()
   
   // Système de notification toast
   const { toast } = useToast()
 
   // Utilisation du hook pour les rôles
-  const { roles: userRoles, hasRole, isLoading: isLoadingRoles } = useUserRoles()
+  const { hasRole, isLoading: isLoadingRoles } = useUserRoles()
   const isAdmin = hasRole('admin')
   const isExploitant = hasRole('exploitant')
 

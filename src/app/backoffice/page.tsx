@@ -1,21 +1,8 @@
 'use client'
 
 import React from 'react'
-import { useUserRoles } from '@/hooks/useUserRoles'
-
-// Traduction des noms de rôles pour l'affichage
-const roleLabels: Record<string, string> = {
-  admin: 'Administrateur',
-  exploitant: 'Exploitant',
-  constructeur: 'Constructeur',
-  labo: 'Laboratoire',
-  asn: 'Autorité ASN',
-  certifieur: 'Agent de certification'
-}
 
 const BackofficePage = () => {
-  const { roles } = useUserRoles()
-  
   return (
     <>
       <h1 className="text-2xl font-bold text-indigo-800 mb-6">Tableau de bord</h1>
