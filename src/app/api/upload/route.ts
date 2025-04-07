@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { formidable, File } from 'formidable'
 import fs from 'fs'
-import { create, Client } from '@web3-storage/w3up-client'
+import { create, Client, type Account } from '@web3-storage/w3up-client'
 import { Blob } from 'buffer'
 import { Readable } from 'stream'
 
@@ -19,7 +19,7 @@ const ensureSpace = async (client: Client, email: string): Promise<`did:key:${st
     let account = Object.values(accounts).find((acc) => {
         const typedAcc = acc as { email?: string }
         return typedAcc.email === email
-      })
+      }) as Account | undefined
     
     if (!account) {
          try {
@@ -84,7 +84,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { fields, files } = await parseFormData(req);
+    const { files } = await parseFormData(req);
 
     const uploadedFile = files.file?.[0] as File | undefined
 
@@ -118,7 +118,11 @@ export async function POST(req: NextRequest) {
         const fileBlob = new Blob([fileContent])
         const fileCid = await client.uploadFile(fileBlob)
         const cidString = fileCid.toString()
-        fs.unlinkSync(uploadedFile.filepath)
+        try {
+            fs.unlinkSync(uploadedFile.filepath)
+          } catch (e) {
+            console.warn('Temp file not deleted:', e)
+          }
         return NextResponse.json({ cid: cidString }, { status: 200 })
 
     } catch (uploadError) {
